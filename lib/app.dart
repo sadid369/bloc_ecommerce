@@ -22,7 +22,12 @@ class BlocEcommerceApp extends StatelessWidget {
           create: (context) {
             return RememberSwitchCubit();
           },
-        )
+        ),
+        BlocProvider(
+          create: (context) {
+            return SignupBloc();
+          },
+        ),
       ],
       child: ScreenUtilInit(
         designSize: const Size(360, 690),

@@ -15,6 +15,7 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  final fromKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,32 +31,83 @@ class _SignupScreenState extends State<SignupScreen> {
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
             ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'username',
-                labelStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.outlineVariant,
-                      fontSize: 20,
-                    ),
-              ),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'email',
-                labelStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.outlineVariant,
-                      fontSize: 20,
-                    ),
-              ),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'password',
-                labelStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.outlineVariant,
-                      fontSize: 20,
-                    ),
-              ),
+            BlocBuilder<SignupBloc, SignupState>(
+              builder: (context, state) {
+                if (state is SignupInitial) {
+                  return Form(
+                      key: fromKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: state.usernameController,
+                            decoration: InputDecoration(
+                              labelText: 'username',
+                              labelStyle: Theme.of(context)
+                                  .textTheme
+                                  .labelLarge
+                                  ?.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .outlineVariant,
+                                    fontSize: 20,
+                                  ),
+                            ),
+                            validator: (value) {
+                              if (value == "" || value == null) {
+                                return 'Username is required';
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                          TextFormField(
+                              controller: state.emailController,
+                              decoration: InputDecoration(
+                                labelText: 'email',
+                                labelStyle: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .outlineVariant,
+                                      fontSize: 20,
+                                    ),
+                              ),
+                              validator: (value) {
+                                if (value == "" || value == null) {
+                                  return 'Email is required';
+                                } else {
+                                  return null;
+                                }
+                              }),
+                          TextFormField(
+                              controller: state.passwordController,
+                              decoration: InputDecoration(
+                                labelText: 'password',
+                                labelStyle: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .outlineVariant,
+                                      fontSize: 20,
+                                    ),
+                              ),
+                              validator: (value) {
+                                if (value == "" || value == null) {
+                                  return 'Password is required';
+                                } else {
+                                  return null;
+                                }
+                              })
+                        ],
+                      ));
+                } else {
+                  return Container();
+                }
+              },
             ),
             const Gap(30),
             Row(
@@ -86,7 +138,9 @@ class _SignupScreenState extends State<SignupScreen> {
         text: 'Sign Up',
         bg: Theme.of(context).colorScheme.onPrimaryContainer,
         onTap: () {
-          context.pushNamed(Routes.REGISTER_ROUTE);
+          if (fromKey.currentState!.validate()) {
+            print('Validate');
+          }
         },
       ),
     );
