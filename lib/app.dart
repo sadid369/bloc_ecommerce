@@ -1,3 +1,4 @@
+// import 'package:bloc_ecommerce/src/blocs/authentication/remember_switch_cubit.dart';
 import 'package:bloc_ecommerce/src/routes/route_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,6 +16,11 @@ class BlocEcommerceApp extends StatelessWidget {
         BlocProvider(
           create: (context) {
             return SplashCubit();
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            return RememberSwitchCubit();
           },
         )
       ],
